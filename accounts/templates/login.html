@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li class="message">{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<form method="POST">
+{% csrf_token %}
+
+<!-- شماره تلفن -->
+{% if not request.session.otp %}
+    <label for="phone_number">شماره تلفن:</label>
+    <input type="text" name="phone_number" required>
+
+    <button type="submit">ارسال کد OTP</button>
+{% endif %}
+
+<!-- کد OTP -->
+{% if request.session.otp %}
+    <label for="sent_otp">کد OTP:</label>
+    <input type="text" name="sent_otp" required>
+
+    <button type="submit">ورود</button>
+{% endif %}
+</form>
+{% endblock content %}

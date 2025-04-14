@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block js %}
+<script src="{% static "js/signature.js" %}"></script>
+{% endblock js %}
+{% block content %}
+  <h2>پروفایل کاربر</h2>
+
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <label>امضا با انگشت یا موس:</label><br>
+    <canvas id="signature-pad" width="400" height="200" style="border:1px solid #ccc;"></canvas>
+    <br>
+    <button type="button" onclick="clearPad()">پاک کردن امضا</button>
+    <input type="hidden" name="signature_data" id="signature-data">
+
+    <br><br>
+    <button type="submit" class="btn btn-primary">ذخیره</button>
+  </form>
+{% endblock %}
