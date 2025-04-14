@@ -1,12 +1,14 @@
 from django.template.loader import render_to_string
-from weasyprint import HTML
+import imgkit
 import tempfile
 
-def render_invoice_to_pdf(invoice):
+def render_invoice_to_image(invoice):
     context = {'invoice': invoice}
     html_string = render_to_string('invoice_pdf.html', context)
-
-    with tempfile.NamedTemporaryFile(delete=False, suffix='.pdf') as output:
-        HTML(string=html_string).write_pdf(target=output.name)
-        pdf_file_path = output.name
-    return pdf_file_path
+    
+    config = imgkit.config(wkhtmltoimage='/usr/local/bin/wkhtmltoimage')
+    
+    with tempfile.NamedTemporaryFile(delete=False, suffix='.png') as output:
+        imgkit.from_string(html_string, output.name, config=config)
+        image_path = output.name
+    return image_path
