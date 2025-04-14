@@ -3,14 +3,12 @@ from django.contrib.auth.decorators import login_required
 from .models import Invoice
 from django.http import HttpResponseForbidden
 from .forms import InvoiceForm, InvoiceItemFormSet
+from django.core.mail import EmailMessage
+from django.conf import settings
+from .utils import render_invoice_to_pdf
 
 @login_required
 def invoice_create_or_update(request, pk=None):
-    if pk:
-        invoice = get_object_or_404(Invoice, pk=pk, user=request.user)
-    else:
-        invoice = None
-
     if request.method == 'POST':
         form = InvoiceForm(request.POST, instance=invoice)
         formset = InvoiceItemFormSet(request.POST, instance=invoice)
@@ -20,6 +18,26 @@ def invoice_create_or_update(request, pk=None):
             invoice.save()
             formset.instance = invoice
             formset.save()
+            
+            if invoice.status == 'final':
+                pdf_path = render_invoice_to_pdf(invoice)
+                
+                seller_email = request.user.email
+                customer_email = invoice.customer.email if invoice.customer else None
+
+                subject = f"Invoice {invoice.invoice_number}"
+                message = "Dear Customer, please find attached your invoice."
+                email = EmailMessage(subject, message, settings.DEFAULT_FROM_EMAIL)
+                
+                email.attach_file(pdf_path)
+                
+                email.to = [seller_email]
+                email.send()
+
+                if customer_email:
+                    email.to = [customer_email]
+                    email.send()
+
             return redirect('invoice_list')
     else:
         form = InvoiceForm(instance=invoice)
