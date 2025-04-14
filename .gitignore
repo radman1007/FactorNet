@@ -19,9 +19,7 @@
 
 # Ignore media/uploads folders
 /media/
-uploads/
-static/uploads/
-staticfiles/
+/static/
 
 # Ignore compiled Python files
 __pycache__/
