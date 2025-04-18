@@ -56,7 +56,7 @@ def invoice_create_or_update(request, pk=None):
         form = InvoiceForm(instance=invoice)
         formset = InvoiceItemFormSet(instance=invoice)
 
-    return render(request, 'invoice_form.html', {
+    return render(request, 'invoice_create.html', {
         'form': form,
         'formset': formset,
         'is_edit': pk is not None

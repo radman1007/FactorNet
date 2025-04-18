@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ایجاد فاکتور جدید</title>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./m.css">
+</head>
+<body>
+
+  <section class="hero">
+    <div class="navbar">
+      <div class="logo">فاکتور<span>نت</span></div>
+      <ul class="nav-links">
+        <li><a href="/">خانه</a></li>
+        <li><a href="#">فاکتورهای من</a></li>
+        <li><a href="#">خروج</a></li>
+      </ul>
+    </div>
+    <div class="hero-content">
+      <h2>ایجاد فاکتور جدید</h2>
+      <p>فاکتور خود را با چند کلیک ساده بسازید و ذخیره کنید.</p>
+    </div>
+  </section>
+
+  <section class="invoice-form">
+    <form id="invoiceForm">
+      <h3>اطلاعات مشتری</h3>
+      <input type="text" placeholder="نام کامل مشتری" required>
+      <input type="text" placeholder="شماره تلفن">
+      <input type="text" placeholder="کد ملی">
+      <input type="email" placeholder="ایمیل">
+      <textarea placeholder="آدرس مشتری"></textarea>
+
+      <h3>جزئیات فاکتور</h3>
+      <input type="text" placeholder="شماره فاکتور">
+      <input type="date" placeholder="تاریخ سررسید">
+      <textarea placeholder="یادداشت (اختیاری)"></textarea>
+
+      <h3>آیتم‌های فاکتور</h3>
+      <div id="itemsContainer"></div>
+      <button type="button" class="btn" onclick="addItem()">افزودن آیتم</button>
+
+      <div class="totals">
+        <label>تخفیف: <input type="number" id="discount" value="0" oninput="calculateTotal()"> تومان</label>
+        <label>مالیات (%): <input type="number" id="tax" value="0" oninput="calculateTotal()"></label>
+        <label>وضعیت:
+          <select>
+            <option>پیش‌نویس</option>
+            <option>نهایی</option>
+            <option>پرداخت شده</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="signature">
+        <label>امضا:</label>
+        <canvas id="signaturePad" width="300" height="150" style="border:1px solid #ccc;"></canvas>
+        <button type="button" onclick="clearSignature()">پاک کردن امضا</button>
+      </div>
+
+      <div class="totalBox">
+        مبلغ کل: <span id="totalAmount">۰</span> تومان
+      </div>
+
+      <button class="btn" type="submit">ذخیره فاکتور</button>
+    </form>
+  </section>
+
+  <footer class="footer">
+    © تمامی حقوق محفوظ است. فاکتورنت ۲۰۲۵
+  </footer>
+
+  <script src="./m.js"></script>
+</body>
+</html>

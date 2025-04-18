@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static "css/invoice_create.css" %}">
+{% endblock css %}
+{% block js %}
+<script src="{% static "js/invoice_create.js" %}"></script>
+{% endblock js %}
+{% block header %}
+<div class="hero-content">
+    <h2>ایجاد فاکتور جدید</h2>
+    <p>فاکتور خود را با چند کلیک ساده بسازید و ذخیره کنید.</p>
+</div>
+{% endblock header %}
+{% block content %}
+<section class="invoice-form">
+    <form id="invoiceForm" action="" method="POST">
+        {% csrf_token %}
+      <h3>اطلاعات مشتری</h3>
+      <input type="text" placeholder="نام کامل مشتری" required>
+      <input type="text" placeholder="شماره تلفن">
+      <input type="text" placeholder="کد ملی">
+      <input type="email" placeholder="ایمیل">
+      <textarea placeholder="آدرس مشتری"></textarea>
+
+      <h3>جزئیات فاکتور</h3>
+      <input type="text" placeholder="شماره فاکتور">
+      <input type="date" placeholder="تاریخ سررسید">
+      <textarea placeholder="یادداشت (اختیاری)"></textarea>
+
+      <h3>آیتم‌های فاکتور</h3>
+      <div id="itemsContainer"></div>
+      <button type="button" class="btn" onclick="addItem()">افزودن آیتم</button>
+
+      <div class="totals">
+        <label>تخفیف: <input type="number" id="discount" value="0" oninput="calculateTotal()"> تومان</label>
+        <label>مالیات (%): <input type="number" id="tax" value="0" oninput="calculateTotal()"></label>
+        <label>وضعیت:
+          <select>
+            <option>پیش‌نویس</option>
+            <option>نهایی</option>
+            <option>پرداخت شده</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="signature">
+        <label>امضا:</label>
+        <canvas id="signaturePad" width="300" height="150" style="border:1px solid #ccc;"></canvas>
+        <button type="button" onclick="clearSignature()">پاک کردن امضا</button>
+      </div>
+
+      <div class="totalBox">
+        مبلغ کل: <span id="totalAmount">۰</span> تومان
+      </div>
+
+      <button class="btn" type="submit">ذخیره فاکتور</button>
+    </form>
+</section>
+{% endblock content %}
