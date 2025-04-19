@@ -59,7 +59,7 @@
             {% elif invoice.status == 'paid' %}
             <td>پرداخت شده</td>
             {% endif %}
-            <td>{{ invoice.total }} تومان</td>
+            <td>{{ invoice.total|floatformat:0 }} تومان</td>
             <td class="invoice-actions">
                 <a href="#">مشاهده</a>
                 <a href="#">ویرایش</a>

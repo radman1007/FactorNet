@@ -2,6 +2,7 @@ from django.db import models
 from config import settings
 import uuid
 from django.utils import timezone
+from datetime import datetime
 
 
 class Customer(models.Model):
@@ -42,8 +43,18 @@ class Invoice(models.Model):
         verbose_name = "فاکتور"
         verbose_name_plural = "فاکتور‌ها"
         
+    def save(self, *args, **kwargs):
+        if not self.invoice_number:
+            date_str = self.created_at.strftime('%Y%m%d')
 
+            today_invoices = Invoice.objects.filter(
+                created_at__date=self.created_at.date()
+            )
+            count_today = today_invoices.count() + 1
 
+            self.invoice_number = f"FAK-{date_str}-{count_today:04d}"
+
+        super().save(*args, **kwargs)
     def subtotal(self):
         return sum(item.total_price for item in self.items.all())
 
