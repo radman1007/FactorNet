@@ -35,7 +35,7 @@ class Invoice(models.Model):
     due_date = models.DateField(blank=True, null=True, verbose_name="تاریخ سررسید")
     discount = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name="تخفیف")
     tax_percent = models.DecimalField(max_digits=5, decimal_places=2, default=0, verbose_name="درصد مالیات")
-    notes = models.TextField(blank=True, verbose_name="یادداشت")
+    notes = models.TextField(blank=True, null=True, verbose_name="یادداشت")
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='draft', verbose_name="وضعیت")
 
     class Meta:
@@ -60,7 +60,7 @@ class Invoice(models.Model):
 class InvoiceItem(models.Model):
     invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE, related_name='items', verbose_name="فاکتور")
     name = models.CharField(max_length=255, verbose_name="نام آیتم")
-    description = models.TextField(blank=True, verbose_name="توضیحات")
+    description = models.TextField(blank=True, null=True, verbose_name="توضیحات")
     quantity = models.PositiveIntegerField(default=1, verbose_name="تعداد")
     unit_price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="قیمت واحد")
 
