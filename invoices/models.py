@@ -62,7 +62,7 @@ class InvoiceItem(models.Model):
     name = models.CharField(max_length=255, verbose_name="نام آیتم")
     description = models.TextField(blank=True, null=True, verbose_name="توضیحات")
     quantity = models.PositiveIntegerField(default=1, verbose_name="تعداد")
-    unit_price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="قیمت واحد")
+    unit_price = models.PositiveIntegerField(verbose_name="قیمت واحد")
 
     class Meta:
         verbose_name = "آیتم فاکتور"
