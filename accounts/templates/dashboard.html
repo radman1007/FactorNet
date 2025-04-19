@@ -1,5 +1,63 @@
 {% extends "base.html" %}
 {% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static "css/dashboard.css" %}">
+{% endblock css %}
 {% block content %}
+<div class="container">
+    <div class="profile-section">
+      <h2>اطلاعات حساب کاربری</h2>
+      <form action="" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="full-name">نام کامل</label>
+          <input type="text" id="full-name" value="{{ profile.full_name }}">
+        </div>
+        <div class="form-group">
+          <label for="phone">شماره تماس</label>
+          <input type="text" id="phone" value="{{ user.phone }}">
+        </div>
+        <div class="form-group">
+          <label for="email">ایمیل</label>
+          <input type="email" id="email" value="{{ profile.email }}">
+        </div>
+        <div class="form-group">
+          <label for="address">آدرس</label>
+          <textarea id="address" rows="3">{{ profile.address }}</textarea>
+        </div>
+        <button class="btn" type="submit">ذخیره تغییرات</button>
+      </form>
+    </div>
 
+    <div class="invoices-section">
+      <h2>فاکتورهای من</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>شماره فاکتور</th>
+            <th>مشتری</th>
+            <th>تاریخ</th>
+            <th>وضعیت</th>
+            <th>مجموع</th>
+            <th>عملیات</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for invoices in issued_invoices %}
+            <tr>
+            <td>INV-00123</td>
+            <td>وحید رضایی</td>
+            <td>۱۴۰۳/۰۱/۲۰</td>
+            <td>نهایی</td>
+            <td>۲,۴۰۰,۰۰۰ تومان</td>
+            <td class="invoice-actions">
+                <a href="#">مشاهده</a>
+                <a href="#">ویرایش</a>
+            </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+    </div>
+</div>
 {% endblock content %}
