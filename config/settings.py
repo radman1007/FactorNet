@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'accounts',
     'invoices',
     'home',
+    'errors',
 ]
 
 MIDDLEWARE = [
