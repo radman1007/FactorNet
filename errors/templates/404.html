@@ -1,0 +1,34 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>۴۰۴ | صفحه یافت نشد</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static "css/404.css" %}">
+</head>
+<body>
+
+  <section class="hero">
+    <h1>۴۰۴</h1>
+    <p>اوه! صفحه‌ای که به دنبالش هستید یافت نشد.</p>
+  </section>
+
+  <div class="illustration">
+    <img src="{% static "images/undraw_towing_e407.svg" %}" alt="صفحه یافت نشد" style="width: 100%;">
+  </div>
+
+  <div class="container">
+    <h2>متأسفیم :(</h2>
+    <p>ممکن است آدرس وارد شده اشتباه باشد یا صفحه به‌روزرسانی شده باشد.  
+       برای بازگشت به صفحه اصلی، روی دکمه زیر کلیک کنید.</p>
+    <a href="{% url "index" %}" class="btn">بازگشت به خانه</a>
+  </div>
+
+  <div class="footer">
+    © 2025 فاکتورنت — مدیریت هوشمند صدور فاکتور
+  </div>
+
+</body>
+</html>
