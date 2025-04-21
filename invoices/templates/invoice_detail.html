@@ -1,0 +1,84 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>مشاهده فاکتور</title>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static "css/invoice_detail.html" %}">
+</head>
+<body>
+  <section class="hero">
+    <div class="hero-content">
+      <h2> شماره فاکتور 20250417-0003</h2>
+      <p>مشاهده جزئیات کامل فاکتور برای مشتری علی رضایی</p>
+    </div>
+  </section>
+
+  <div class="container">
+    <h3>مشخصات مشتری</h3>
+    <ul>
+      <li><strong>نام کامل:</strong> علی رضایی</li>
+      <li><strong>شماره تماس:</strong> 09121234567</li>
+      <li><strong>کد ملی:</strong> 1234567890</li>
+      <li><strong>ایمیل:</strong> ali@email.com</li>
+      <li><strong>آدرس:</strong> تهران، خیابان آزادی</li>
+    </ul>
+
+    <h3>آیتم‌های فاکتور</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>نام آیتم</th>
+          <th>تعداد</th>
+          <th>قیمت واحد</th>
+          <th>جمع</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>مکمل پروتئین</td>
+          <td>2</td>
+          <td>400,000 تومان</td>
+          <td>800,000 تومان</td>
+        </tr>
+        <tr>
+          <td>کراتین</td>
+          <td>1</td>
+          <td>250,000 تومان</td>
+          <td>250,000 تومان</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="summary">
+      <p><strong>جمع جزء:</strong> 1,050,000 تومان</p>
+      <p><strong>تخفیف:</strong> 50,000 تومان</p>
+      <p><strong>مالیات (9٪):</strong> 90,000 تومان</p>
+      <h4>مبلغ نهایی: 1,090,000 تومان</h4>
+      <p><strong>وضعیت:</strong> پرداخت شده</p>
+      <p><strong>تاریخ:</strong> 2025/04/17</p>
+    </div>
+
+    <div class="notes">
+      <h4>یادداشت‌ها:</h4>
+      <p>لطفاً فاکتور را نزد خود نگه دارید. ارسال ۳ روز کاری زمان می‌برد.</p>
+    </div>
+
+    <div class="signature-section">
+      <h4>امضای فروشنده:</h4>
+      <img src="seller-signature.png" alt="امضای فروشنده">
+    </div>
+
+    <div class="btn-row">
+      <a href="sample-invoice.jpg" class="btn" download>دانلود به‌صورت عکس</a>
+      <a href="sample-invoice.pdf" class="btn" download>دانلود به‌صورت PDF</a>
+    </div>
+  </div>
+
+  <div class="footer">
+    طراحی‌شده توسط فاکتورنت
+  </div>
+
+</body>
+</html>
