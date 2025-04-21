@@ -63,10 +63,12 @@
     </div>
     {% endif %}
 
+    {% if signature_url %}
     <div class="signature-section">
       <h4>امضای فروشنده:</h4>
-      <img src="seller-signature.png" alt="امضای فروشنده">
+      <img src="{{ signature_url }}" alt="امضای فروشنده">
     </div>
+    {% endif %}
 
     <div class="btn-row">
       <a href="sample-invoice.jpg" class="btn" download>دانلود به‌صورت عکس</a>
