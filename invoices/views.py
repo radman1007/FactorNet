@@ -6,6 +6,8 @@ from .forms import InvoiceForm, InvoiceItemFormSet
 from django.core.mail import EmailMessage
 from django.conf import settings
 from .utils import *
+from accounts.models import UserProfile
+from django.db.models import Q
 
 @login_required
 def invoice_list_view(request):
@@ -82,9 +84,22 @@ def invoice_delete_view(request, pk):
 
 @login_required
 def invoice_detail_view(request, pk):
-    invoice = get_object_or_404(Invoice, pk=pk, user=request.user)
+    invoice = get_object_or_404(
+        Invoice.objects.select_related('customer'),
+        Q(pk=pk) & (Q(user=request.user) | Q(customer__user=request.user))
+    )
+    
+    signature_url = None
+    try:
+        profile = UserProfile.objects.get(user=invoice.user)
+        if profile.signature:
+            signature_url = profile.signature.url
+    except UserProfile.DoesNotExist:
+        pass
+    
     context = {
-        'invoice' : invoice
+        'invoice': invoice,
+        'signature_url': signature_url,
     }
-    return render(request, 'invoice_detail.html', context)
 
+    return render(request, 'invoice-detail.html', context)
