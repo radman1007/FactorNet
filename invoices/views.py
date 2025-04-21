@@ -102,4 +102,4 @@ def invoice_detail_view(request, pk):
         'signature_url': signature_url,
     }
 
-    return render(request, 'invoice-detail.html', context)
+    return render(request, 'invoice_detail.html', context)

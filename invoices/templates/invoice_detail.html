@@ -5,24 +5,24 @@
   <meta charset="UTF-8">
   <title>مشاهده فاکتور</title>
   <link href="https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="{% static "css/invoice_detail.html" %}">
+  <link rel="stylesheet" href="{% static "css/invoice_detail.css" %}">
 </head>
 <body>
   <section class="hero">
     <div class="hero-content">
-      <h2> شماره فاکتور 20250417-0003</h2>
-      <p>مشاهده جزئیات کامل فاکتور برای مشتری علی رضایی</p>
+      <h2> شماره فاکتور {{ invoice.invoice_number }}</h2>
+      <p>مشاهده جزئیات کامل فاکتور برای مشتری {{ invoice.customer }}</p>
     </div>
   </section>
 
   <div class="container">
     <h3>مشخصات مشتری</h3>
     <ul>
-      <li><strong>نام کامل:</strong> علی رضایی</li>
-      <li><strong>شماره تماس:</strong> 09121234567</li>
-      <li><strong>کد ملی:</strong> 1234567890</li>
-      <li><strong>ایمیل:</strong> ali@email.com</li>
-      <li><strong>آدرس:</strong> تهران، خیابان آزادی</li>
+      <li><strong>نام کامل:</strong> {{ invoice.customer }}</li>
+      <li><strong>شماره تماس:</strong> {{ invoice.customer.phone_number }}</li>
+      <li><strong>کد ملی:</strong> {{ invoice.customer.national_code }}</li>
+      <li><strong>ایمیل:</strong> {{ invoice.customer.email }}</li>
+      <li><strong>آدرس:</strong> {{ invoice.customer.address }}</li>
     </ul>
 
     <h3>آیتم‌های فاکتور</h3>
@@ -36,34 +36,32 @@
         </tr>
       </thead>
       <tbody>
+        {% for item in invoice.items.all %}
         <tr>
-          <td>مکمل پروتئین</td>
-          <td>2</td>
-          <td>400,000 تومان</td>
-          <td>800,000 تومان</td>
+          <td>{{ item.name }}</td>
+          <td>{{ item.quantity }}</td>
+          <td>{{ item.unit_price }} تومان</td>
+          <td>{{ item.total_price }} تومان</td>
         </tr>
-        <tr>
-          <td>کراتین</td>
-          <td>1</td>
-          <td>250,000 تومان</td>
-          <td>250,000 تومان</td>
-        </tr>
+        {% endfor %}
       </tbody>
     </table>
 
     <div class="summary">
-      <p><strong>جمع جزء:</strong> 1,050,000 تومان</p>
-      <p><strong>تخفیف:</strong> 50,000 تومان</p>
-      <p><strong>مالیات (9٪):</strong> 90,000 تومان</p>
-      <h4>مبلغ نهایی: 1,090,000 تومان</h4>
-      <p><strong>وضعیت:</strong> پرداخت شده</p>
-      <p><strong>تاریخ:</strong> 2025/04/17</p>
+      <p><strong>جمع جزء:</strong> {{ invoice.subtotal|floatformat:0 }} تومان</p>
+      <p><strong>تخفیف:</strong> {{ invoice.discount|floatformat:0 }} تومان</p>
+      <p><strong>مالیات ({{ invoice.tax_percent|floatformat:0 }}٪):</strong> {{ invoice.tax_amount|floatformat:0 }} تومان</p>
+      <h4>مبلغ نهایی: {{ invoice.total|floatformat:0 }} تومان</h4>
+      <p><strong>وضعیت:</strong> {{ invoice.get_status_display }}</p>
+      <p><strong>تاریخ:</strong> {{ invoice.created_at|date:"Y-m-d" }}</p>
     </div>
 
+    {% if invoice.notes %}
     <div class="notes">
       <h4>یادداشت‌ها:</h4>
-      <p>لطفاً فاکتور را نزد خود نگه دارید. ارسال ۳ روز کاری زمان می‌برد.</p>
+      <p>{{ invoice.notes }}</p>
     </div>
+    {% endif %}
 
     <div class="signature-section">
       <h4>امضای فروشنده:</h4>

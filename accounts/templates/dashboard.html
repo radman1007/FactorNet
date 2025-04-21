@@ -52,17 +52,11 @@
             <td>{{ invoice.invoice_number }}</td>
             <td>{{ invoice.customer }}</td>
             <td>{{ invoice.created_at|date:"Y-m-d" }}</td>
-            {% if invoice.status == 'draft' %}
-            <td>پیش‌نویس</td>
-            {% elif invoice.status == 'final' %}
-            <td>نهایی</td>
-            {% elif invoice.status == 'paid' %}
-            <td>پرداخت شده</td>
-            {% endif %}
+            <td>{{ invoice.get_status_display }}</td>
             <td>{{ invoice.total|floatformat:0 }} تومان</td>
             <td class="invoice-actions">
-                <a href="#">مشاهده</a>
-                <a href="#">ویرایش</a>
+                <a href="{% url "invoices:invoice_detail" invoice.pk %}">مشاهده</a>
+                <a href="">ویرایش</a>
             </td>
             </tr>
             {% endfor %}
