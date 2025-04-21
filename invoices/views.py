@@ -78,3 +78,13 @@ def invoice_delete_view(request, pk):
     }
     
     return render(request, 'invoice_confirm_delete.html', context)
+
+
+@login_required
+def invoice_detail_view(request, pk):
+    invoice = get_object_or_404(Invoice, pk=pk, user=request.user)
+    context = {
+        'invoice' : invoice
+    }
+    return render(request, 'invoice_detail.html', context)
+
