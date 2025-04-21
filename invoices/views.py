@@ -19,11 +19,12 @@ def invoice_list_view(request):
 
 @login_required
 def invoice_create_or_update(request, pk=None):
-    # تنظیم invoice بر اساس وجود pk
     if pk:
         invoice = get_object_or_404(Invoice, pk=pk, user=request.user)
+        profile = get_object_or_404(UserProfile, user=request.user)
     else:
         invoice = None
+        profile = None
 
     if request.method == 'POST':
         form = InvoiceForm(request.POST, instance=invoice)
@@ -57,12 +58,16 @@ def invoice_create_or_update(request, pk=None):
     else:
         form = InvoiceForm(instance=invoice)
         formset = InvoiceItemFormSet(instance=invoice)
-
-    return render(request, 'invoice_create.html', {
+        
+    context = {
+        'invoice' : invoice,
+        'profile' : profile,
         'form': form,
         'formset': formset,
         'is_edit': pk is not None
-        })
+    }
+
+    return render(request, 'invoice_create.html', context)
     
 @login_required
 def invoice_delete_view(request, pk):

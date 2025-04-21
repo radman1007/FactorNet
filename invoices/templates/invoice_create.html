@@ -17,41 +17,49 @@
     <form id="invoiceForm" action="" method="POST">
         {% csrf_token %}
       <h3>اطلاعات مشتری</h3>
-      <input type="text" placeholder="نام کامل مشتری" required>
-      <input type="text" placeholder="شماره تلفن">
-      <input type="text" placeholder="کد ملی">
-      <input type="email" placeholder="ایمیل">
-      <textarea placeholder="آدرس مشتری"></textarea>
+      <input type="text" placeholder="نام کامل مشتری" required value="{{ invoice.customer }}">
+      <input type="text" placeholder="شماره تلفن" value="{{ invoice.customer.phone_number }}">
+      <input type="text" placeholder="کد ملی" value="{{ invoice.customer.national_code }}">
+      <input type="email" placeholder="ایمیل" value="{{ invoice.customer.email }}">
+      <textarea placeholder="آدرس مشتری">{{ invoice.customer.address }}</textarea>
 
       <h3>جزئیات فاکتور</h3>
-      <input type="text" placeholder="شماره فاکتور">
-      <input type="date" placeholder="تاریخ سررسید">
-      <textarea placeholder="یادداشت (اختیاری)"></textarea>
+      <input type="text" placeholder="شماره فاکتور" value="{{ invoice.invoice_number }}">
+      <input type="date" placeholder="تاریخ سررسید" value="{{ invoice.due_date }}">
+      <textarea placeholder="یادداشت (اختیاری)">{{ invoice.notes }}</textarea>
 
       <h3>آیتم‌های فاکتور</h3>
       <div id="itemsContainer"></div>
       <button type="button" class="btn" onclick="addItem()">افزودن آیتم</button>
 
       <div class="totals">
-        <label>تخفیف (تومان) : <input type="number" id="discount" value="0" oninput="calculateTotal()"></label>
-        <label>مالیات (%): <input type="number" id="tax" value="0" oninput="calculateTotal()"></label>
+        <label>تخفیف (تومان) : <input type="number" id="discount" value="{{ invoice.discount|floatformat:0 }}" oninput="calculateTotal()"></label>
+        <label>مالیات (%): <input type="number" id="tax" value="{{ invoice.tax_percent }}" oninput="calculateTotal()"></label>
         <label>وضعیت:
-          <select>
-            <option>پیش‌نویس</option>
-            <option>نهایی</option>
-            <option>پرداخت شده</option>
+          <select name="status">
+            <option value="draft" {% if invoice.status == "draft" %}selected{% endif %}>پیش‌نویس</option>
+            <option value="final" {% if invoice.status == "final" %}selected{% endif %}>نهایی</option>
+            <option value="paid" {% if invoice.status == "paid" %}selected{% endif %}>پرداخت شده</option>
           </select>
         </label>
       </div>
 
+      {% if not profile.signature %}
       <div class="signature">
         <label>امضا:</label>
         <canvas id="signaturePad" width="300" height="150" style="border:1px solid #ccc;"></canvas>
         <button type="button" onclick="clearSignature()">پاک کردن امضا</button>
       </div>
+      {% endif %}
 
       <div class="totalBox">
-        مبلغ کل: <span id="totalAmount">۰</span> تومان
+        مبلغ کل: <span id="totalAmount">
+          {% if invoice.total %}
+          {{ invoice.total|floatformat:0 }}
+          {% else %}
+          ۰
+          {% endif %}
+          </span> تومان
       </div>
 
       <button class="btn" type="submit">ذخیره فاکتور</button>

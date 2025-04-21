@@ -56,7 +56,7 @@
             <td>{{ invoice.total|floatformat:0 }} تومان</td>
             <td class="invoice-actions">
                 <a href="{% url "invoices:invoice_detail" invoice.pk %}" target="_blank" rel="noopener noreferrer">مشاهده</a>
-                <a href="">ویرایش</a>
+                <a href="{% url "invoices:invoice_edit" invoice.pk %}">ویرایش</a>
             </td>
             </tr>
             {% endfor %}
