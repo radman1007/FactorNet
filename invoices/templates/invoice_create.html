@@ -27,7 +27,7 @@
 
       <h3>جزئیات فاکتور</h3>
       <input type="text" name="invoice_number" placeholder="شماره فاکتور" value="{{ invoice.invoice_number }}">
-      <input type="date" name="due_date" placeholder="تاریخ سررسید" value="{{ invoice.due_date }}">
+      <input type="date" name="due_date" id="dueDateInput" class="rtl-date" value="{{ invoice.due_date }}">
       <textarea name="notes" placeholder="یادداشت (اختیاری)">{{ invoice.notes }}</textarea>
 
       <h3>آیتم‌های فاکتور</h3>
@@ -67,4 +67,8 @@
       <button class="btn" type="submit">ذخیره فاکتور</button>
     </form>
 </section>
+<script>
+  const dateInput = document.getElementById('dueDateInput');
+  dateInput.placeholder = 'ماه/روز/سال'; // نمایش فارسی placeholder
+</script>
 {% endblock content %}
