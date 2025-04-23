@@ -26,12 +26,24 @@
       <textarea name="customer_address" placeholder="آدرس مشتری">{{ invoice.customer.address }}</textarea>
 
       <h3>جزئیات فاکتور</h3>
+      {% if not invoice.invoice_number %}
       <input type="text" name="invoice_number" placeholder="شماره فاکتور" value="{{ invoice.invoice_number }}">
+      {% endif %}
       <input type="date" name="due_date" id="dueDateInput" class="rtl-date" value="{{ invoice.due_date }}">
       <textarea name="notes" placeholder="یادداشت (اختیاری)">{{ invoice.notes }}</textarea>
 
       <h3>آیتم‌های فاکتور</h3>
-      <div id="itemsContainer"></div>
+      <div id="itemsContainer">
+        {% for item in invoice.items.all %}
+        <div class="item-row">
+          <input type="text" value="{{ item.name }}" placeholder="نام آیتم" required>
+          <input type="text" value="{{ item.description }}" placeholder="توضیحات ( اختیاری )">
+          <input type="number" placeholder="تعداد" value="{{ item.quantity }}" oninput="calculateTotal()" class="quantity">
+          <input type="number" value="{{ item.unit_price }}" placeholder="قیمت واحد" oninput="calculateTotal()" class="price">
+          <button type="button" onclick="this.parentElement.remove(); calculateTotal()" class="remove-item">×</button>
+        </div>
+        {% endfor %}
+      </div>
       <button type="button" class="btn" onclick="addItem()">افزودن آیتم</button>
 
       <div class="totals">
@@ -71,4 +83,56 @@
   const dateInput = document.getElementById('dueDateInput');
   dateInput.placeholder = 'ماه/روز/سال'; // نمایش فارسی placeholder
 </script>
+{% comment %} <script>
+  let itemIndex = 0;
+
+  function addItem() {
+    const container = document.getElementById('itemsContainer');
+
+    const itemHtml = `
+      <div class="invoice-item">
+        <input type="text" name="items-${itemIndex}-name" placeholder="نام آیتم" required>
+        <input type="text" name="items-${itemIndex}-description" placeholder="توضیحات">
+        <input type="number" name="items-${itemIndex}-quantity" placeholder="تعداد" oninput="calculateTotal()">
+        <input type="number" name="items-${itemIndex}-unit_price" placeholder="قیمت واحد" oninput="calculateTotal()">
+      </div>
+    `;
+
+    container.insertAdjacentHTML('beforeend', itemHtml);
+    
+    // بروزرسانی تعداد فرم‌ها
+    document.getElementById('id_items-TOTAL_FORMS').value = itemIndex + 1;
+    itemIndex++;
+  }
+  let itemIndex = parseInt(document.getElementById('id_items-TOTAL_FORMS').value);
+
+function addItem() {
+  const container = document.getElementById('itemsContainer');
+
+  const itemHtml = `
+    <div class="invoice-item">
+      <input type="text" name="items-${itemIndex}-name" placeholder="نام آیتم" required>
+      <input type="text" name="items-${itemIndex}-description" placeholder="توضیحات">
+      <input type="number" name="items-${itemIndex}-quantity" placeholder="تعداد" oninput="calculateTotal()">
+      <input type="number" name="items-${itemIndex}-unit_price" placeholder="قیمت واحد" oninput="calculateTotal()">
+    </div>
+  `;
+
+  container.insertAdjacentHTML('beforeend', itemHtml);
+  itemIndex++;
+  document.getElementById('id_items-TOTAL_FORMS').value = itemIndex;
+}
+function markDeleted(button) {
+  const item = button.closest('.invoice-item');
+  const checkbox = item.querySelector('.delete-checkbox');
+  if (checkbox) {
+    checkbox.checked = true;
+    item.style.display = 'none'; // حذف ظاهری
+  } else {
+    item.remove(); // برای آیتم‌های جدیدی که هنوز سیو نشدن
+    itemIndex--;
+    document.getElementById('id_items-TOTAL_FORMS').value = itemIndex;
+  }
+}
+</script> {% endcomment %}
 {% endblock content %}
