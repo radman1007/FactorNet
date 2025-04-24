@@ -1,22 +1,50 @@
 {% extends 'base.html' %}
 {% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static "css/invoice_create.css" %}">
+{% endblock css %}
 {% block js %}
-<script src="{% static "js/signature_form.js" %}"></script>
+{% comment %} <script src="{% static "js/signature_form.js" %}"></script> {% endcomment %}
+<script src="{% static "js/invoice_create.js" %}"></script>
 {% endblock js %}
+{% block header %}
+<div class="hero-content">
+  <h2>تکمیل اطلاعات</h2>
+  <p>این اطلاعات در فاکتورها و ارتباط با مشتریان استفاده خواهد شد.</p>
+</div>
+{% endblock header %}
 {% block content %}
-  <h2>پروفایل کاربر</h2>
-
-  <form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-
-    <label>امضا با انگشت یا موس:</label><br>
-    <canvas id="signature-pad" width="400" height="200" style="border:1px solid #ccc;"></canvas>
-    <br>
-    <button type="button" onclick="clearPad()">پاک کردن امضا</button>
-    <input type="hidden" name="signature_data" id="signature-data">
-
-    <br><br>
-    <button type="submit" class="btn btn-primary">ذخیره</button>
-  </form>
-{% endblock %}
+<section class="invoice-form">
+  <div class="profile-section">
+    <h2>اطلاعات حساب کاربری</h2>
+    <form action="" method="POST">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="full-name">نام کامل</label>
+        <input type="text" name="full_name" id="full-name" value="">
+      </div>
+      <div class="form-group">
+        <label for="email">ایمیل</label>
+        <input type="email" name="email" id="email" value="">
+      </div>
+      <div class="form-group">
+        <label for="address">آدرس</label>
+        <textarea name="address" id="address" rows="3"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="logo">لوگو</label>
+        <input type="file" name="logo" id="logo" accept="image/*">
+      </div>
+      <div class="form-group">
+        <label for="signature">امضا</label>
+        <canvas name="signature" id="signaturePad" width="300" height="150" style="border:1px solid #ccc;"></canvas>
+        <button type="button" onclick="clearSignature()">پاک کردن امضا</button>
+      </div>
+      <button class="btn" type="submit">ذخیره تغییرات</button>
+    </form>
+  </div>
+</section>
+{% endblock content %}
+{% comment %} <canvas id="signature-pad" width="400" height="200" style="border:1px solid #ccc;"></canvas>
+<button type="button" onclick="clearPad()">پاک کردن امضا</button>
+<input type="hidden" name="signature_data" id="signature-data"> {% endcomment %}

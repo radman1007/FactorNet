@@ -16,19 +16,19 @@
         {% csrf_token %}
         <div class="form-group">
           <label for="full-name">نام کامل</label>
-          <input type="text" id="full-name" value="{{ profile.full_name }}">
+          <input type="text" name="full_name" id="full-name" value="{{ profile.full_name }}">
         </div>
-        <div class="form-group">
+        {% comment %} <div class="form-group">
           <label for="phone">شماره تماس</label>
-          <input type="text" id="phone" value="{{ user.phone }}">
-        </div>
+          <input type="text" name="" id="phone" value="{{ user.phone }}">
+        </div> {% endcomment %}
         <div class="form-group">
           <label for="email">ایمیل</label>
-          <input type="email" id="email" value="{{ profile.email }}">
+          <input type="email" name="email" id="email" value="{{ profile.email }}">
         </div>
         <div class="form-group">
           <label for="address">آدرس</label>
-          <textarea id="address" rows="3">{{ profile.address }}</textarea>
+          <textarea id="address" name="address" rows="3">{{ profile.address }}</textarea>
         </div>
         <button class="btn" type="submit">ذخیره تغییرات</button>
       </form>

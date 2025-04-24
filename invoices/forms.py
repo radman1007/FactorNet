@@ -6,7 +6,7 @@ class InvoiceForm(forms.ModelForm):
     class Meta:
         model = Invoice
         fields = [
-            'customer',
+            # 'customer',
             'due_date',
             'discount',
             'tax_percent',

@@ -6,7 +6,7 @@ from datetime import datetime
 
 
 class Customer(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="کاربر")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="کاربر")
     full_name = models.CharField(max_length=255, verbose_name="نام کامل")
     phone_number = models.CharField(max_length=20, blank=True, null=True, verbose_name="شماره تلفن")
     national_code = models.CharField(max_length=10, blank=True, null=True, verbose_name="کد ملی")

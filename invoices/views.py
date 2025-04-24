@@ -35,6 +35,7 @@ def invoice_create_or_update(request, pk=None):
             invoice.save()
             formset.instance = invoice
             formset.save()
+            form.save()
 
             if invoice.status == 'final':
                 image_path = render_invoice_to_image(invoice)
