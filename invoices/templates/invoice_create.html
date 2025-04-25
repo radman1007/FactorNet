@@ -10,7 +10,11 @@
 {% endblock js %}
 {% block header %}
 <div class="hero-content">
+  {% if not invoice %}
     <h2>ایجاد فاکتور جدید</h2>
+  {% else %}
+    <h2>ویرایش فاکتور</h2>
+  {% endif %}
     <p>فاکتور خود را با چند کلیک ساده بسازید و ذخیره کنید.</p>
 </div>
 {% endblock header %}
