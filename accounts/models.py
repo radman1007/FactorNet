@@ -57,7 +57,7 @@ class OTP(models.Model):
 
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='کاربر')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profiles', verbose_name='کاربر')
     full_name = models.CharField(max_length=255, verbose_name='نام کامل')
     email = models.EmailField(blank=True, null=True, verbose_name='ایمیل')
     address = models.TextField(blank=True, null=True, verbose_name='آدرس')

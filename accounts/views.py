@@ -75,30 +75,16 @@ class LogoutView(View):
         return redirect('login')
 
 
-class ProfileView(LoginRequiredMixin, View):
-    def get(self, request):
-        profile, created = UserProfile.objects.get_or_create(user=request.user)
-        form = UserProfileForm(instance=profile)
-        return render(request, 'profile.html', {'form': form})
-
-    def post(self, request):
-        profile, created = UserProfile.objects.get_or_create(user=request.user)
-        form = UserProfileForm(request.POST, request.FILES, instance=profile)
-
-        # پردازش امضای دیجیتال از canvas
-        signature_data = request.POST.get('signature_data')
-        if signature_data:
-            format, imgstr = signature_data.split(';base64,')
-            ext = format.split('/')[-1]
-            file = ContentFile(base64.b64decode(imgstr), name=f'signature_{request.user.id}.{ext}')
-            profile.signature = file
-
+@login_required
+def profile(request):
+    if len(request.user.profiles.full_name) > 1:
+        return redirect('dashboard')
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            messages.success(request, "پروفایل با موفقیت ذخیره شد.")
-            return redirect('profile')
-
-        return render(request, 'profile.html', {'form': form})
+            return redirect('dashboard')
+    return render(request, 'profile.html')
 
 
 @login_required
