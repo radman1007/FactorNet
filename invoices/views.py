@@ -1,13 +1,15 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from .models import Invoice
 from django.http import HttpResponseForbidden
+from .models import Customer, Invoice, InvoiceItem
 from .forms import InvoiceForm, InvoiceItemFormSet
 from django.core.mail import EmailMessage
 from django.conf import settings
 from .utils import *
 from accounts.models import UserProfile
 from django.db.models import Q
+from rest_framework import viewsets
+from .serializers import CustomerSerializer, InvoiceSerializer, InvoiceItemSerializer
 
 @login_required
 def invoice_list_view(request):
@@ -109,3 +111,16 @@ def invoice_detail_view(request, pk):
     }
 
     return render(request, 'invoice_detail.html', context)
+
+
+class CustomerViewSet(viewsets.ModelViewSet):
+    queryset = Customer.objects.all()
+    serializer_class = CustomerSerializer
+
+class InvoiceViewSet(viewsets.ModelViewSet):
+    queryset = Invoice.objects.all()
+    serializer_class = InvoiceSerializer
+
+class InvoiceItemViewSet(viewsets.ModelViewSet):
+    queryset = InvoiceItem.objects.all()
+    serializer_class = InvoiceItemSerializer
