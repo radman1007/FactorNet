@@ -10,6 +10,7 @@ from accounts.models import UserProfile
 from django.db.models import Q
 from rest_framework import viewsets
 from .serializers import CustomerSerializer, InvoiceSerializer, InvoiceItemSerializer
+from rest_framework.permissions import IsAuthenticated
 
 @login_required
 def invoice_list_view(request):
@@ -114,13 +115,24 @@ def invoice_detail_view(request, pk):
 
 
 class CustomerViewSet(viewsets.ModelViewSet):
-    queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Customer.objects.filter(user=self.request.user)
+
 
 class InvoiceViewSet(viewsets.ModelViewSet):
-    queryset = Invoice.objects.all()
     serializer_class = InvoiceSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Invoice.objects.filter(user=self.request.user)
+
 
 class InvoiceItemViewSet(viewsets.ModelViewSet):
-    queryset = InvoiceItem.objects.all()
     serializer_class = InvoiceItemSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return InvoiceItem.objects.filter(invoice__user=self.request.user)
