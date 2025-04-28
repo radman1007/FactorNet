@@ -4,9 +4,6 @@ from django.contrib import messages
 from django.views import View
 from random import randint
 from .models import OTP, UserProfile
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.files.base import ContentFile
-import base64
 from .forms import UserProfileForm
 from django.contrib.auth.decorators import login_required
 from invoices.models import Invoice
