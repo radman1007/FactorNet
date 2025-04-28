@@ -62,7 +62,7 @@ class LoginView(View):
                 
                 login(request, user, backend='django.contrib.auth.backends.ModelBackend')
                 del request.session['otp']
-                return redirect('index')
+                return redirect('profile')
             else:
                 messages.error(request, "کد وارد شده صحیح نیست.")
 
