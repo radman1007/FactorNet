@@ -11,6 +11,7 @@ from django.db.models import Q
 from rest_framework import viewsets
 from .serializers import CustomerSerializer, InvoiceSerializer, InvoiceItemSerializer
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.exceptions import PermissionDenied
 
 @login_required
 def invoice_list_view(request):
@@ -121,6 +122,19 @@ class CustomerViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return Customer.objects.filter(user=self.request.user)
 
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+    def perform_update(self, serializer):
+        if serializer.instance.user != self.request.user:
+            raise PermissionDenied("شما اجازه ویرایش این مشتری را ندارید.")
+        serializer.save()
+
+    def perform_destroy(self, instance):
+        if instance.user != self.request.user:
+            raise PermissionDenied("شما اجازه حذف این مشتری را ندارید.")
+        instance.delete()
+
 
 class InvoiceViewSet(viewsets.ModelViewSet):
     serializer_class = InvoiceSerializer
@@ -129,6 +143,19 @@ class InvoiceViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return Invoice.objects.filter(user=self.request.user)
 
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+    def perform_update(self, serializer):
+        if serializer.instance.user != self.request.user:
+            raise PermissionDenied("شما اجازه ویرایش این فاکتور را ندارید.")
+        serializer.save()
+
+    def perform_destroy(self, instance):
+        if instance.user != self.request.user:
+            raise PermissionDenied("شما اجازه حذف این فاکتور را ندارید.")
+        instance.delete()
+
 
 class InvoiceItemViewSet(viewsets.ModelViewSet):
     serializer_class = InvoiceItemSerializer
@@ -136,3 +163,19 @@ class InvoiceItemViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return InvoiceItem.objects.filter(invoice__user=self.request.user)
+
+    def perform_create(self, serializer):
+        invoice = serializer.validated_data.get('invoice')
+        if invoice.user != self.request.user:
+            raise PermissionDenied("شما اجازه افزودن آیتم به این فاکتور را ندارید.")
+        serializer.save()
+
+    def perform_update(self, serializer):
+        if serializer.instance.invoice.user != self.request.user:
+            raise PermissionDenied("شما اجازه ویرایش این آیتم فاکتور را ندارید.")
+        serializer.save()
+
+    def perform_destroy(self, instance):
+        if instance.invoice.user != self.request.user:
+            raise PermissionDenied("شما اجازه حذف این آیتم فاکتور را ندارید.")
+        instance.delete()
