@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load humanize %}
 {% block css %}
 <link rel="stylesheet" href="{% static "css/invoice_create.css" %}">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mds.bs.datetimepicker@1.1.1/dist/mds.bs.datetimepicker.style.css">
@@ -77,7 +78,7 @@
       <div class="totalBox">
         مبلغ کل: <span id="totalAmount">
           {% if invoice.total %}
-          {{ invoice.total|floatformat:0 }}
+          {{ invoice.total|floatformat:0|intcomma }}
           {% else %}
           ۰
           {% endif %}
