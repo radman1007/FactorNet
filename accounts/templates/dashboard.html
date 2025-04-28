@@ -3,6 +3,9 @@
 {% block css %}
 <link rel="stylesheet" href="{% static "css/dashboard.css" %}">
 {% endblock css %}
+{% block js %}
+<script src="{% static "js/invoice_create.js" %}"></script>
+{% endblock js %}
 {% block header %}
 <div class="logout-section">
     <a href="{% url "logout" %}" class="logout-btn">خروج از حساب کاربری</a>
@@ -12,27 +15,44 @@
 <div class="container">
     <div class="profile-section">
       <h2>اطلاعات حساب کاربری</h2>
-      <form action="" method="POST">
+      <form action="" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
+        
         <div class="form-group">
           <label for="full-name">نام کامل</label>
           <input type="text" name="full_name" id="full-name" value="{{ profile.full_name }}">
         </div>
-        {% comment %} <div class="form-group">
-          <label for="phone">شماره تماس</label>
-          <input type="text" name="" id="phone" value="{{ user.phone }}">
-        </div> {% endcomment %}
+
         <div class="form-group">
           <label for="email">ایمیل</label>
           <input type="email" name="email" id="email" value="{{ profile.email }}">
         </div>
+
         <div class="form-group">
           <label for="address">آدرس</label>
           <textarea id="address" name="address" rows="3">{{ profile.address }}</textarea>
         </div>
+
+        <div class="form-group">
+          <label for="logo">لوگو</label>
+          {% if profile.logo %}
+            <img src="{{ profile.logo.url }}" alt="لوگو" style="max-height: 100px; display: block; margin-bottom: 10px;">
+          {% endif %}
+          <input type="file" name="logo" id="logo">
+        </div>
+
+        <div class="form-group">
+          <label for="signature">امضا</label>
+          {% if profile.signature %}
+          {% endif %}
+          <canvas name=" 12" id="signaturePad" width="300" height="150" style="border:1px solid #ccc;"></canvas>
+          <button type="button" onclick="clearSignature()">پاک کردن امضا</button>
+        </div>
+
         <button class="btn" type="submit">ذخیره تغییرات</button>
       </form>
     </div>
+
     <div class="invoices-section">
       <h2>فاکتورهای من</h2>
       <table>
