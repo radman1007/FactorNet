@@ -5,3 +5,6 @@ def index(request):
 
 def features(request):
     return render(request, 'features.html')
+
+def guide(request):
+    return render(request, 'guide.html')
