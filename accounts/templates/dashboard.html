@@ -13,49 +13,48 @@
 {% endblock header %}
 {% block content %}
 <div class="container">
-    <div class="profile-section">
-      <h2>اطلاعات حساب کاربری</h2>
-      <form action="" method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        
-        <div class="form-group">
-          <label for="full-name">نام کامل</label>
-          <input type="text" name="full_name" id="full-name" value="{{ profile.full_name }}">
-        </div>
+  <div class="profile-section">
+    <h2>اطلاعات حساب کاربری</h2>
+    <form action="" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="full-name">نام کامل</label>
+        <input type="text" name="full_name" id="full-name" value="{{ profile.full_name }}">
+      </div>
+      <div class="form-group">
+        <label for="email">ایمیل</label>
+        <input type="email" name="email" id="email" value="{{ profile.email }}">
+      </div>
+      <div class="form-group">
+        <label for="address">آدرس</label>
+        <textarea id="address" name="address" rows="3">{{ profile.address }}</textarea>
+      </div>
+      <div class="form-group">
+        <label for="logo">لوگو</label>
+        {% if profile.logo %}
+          <img src="{{ profile.logo.url }}" alt="لوگو" style="max-height: 100px; display: block; margin-bottom: 10px;">
+        {% endif %}
+        <input type="file" name="logo" id="logo">
+      </div>
+      <div class="form-group">
+        <label for="signature">امضا</label>
+        {% if profile.signature %}
+        {% endif %}
+        <canvas id="signaturePad" width="300" height="150" style="border:1px solid #ccc; border-radius: 8px; cursor: crosshair;"></canvas>
+        <button type="button" onclick="clearSignature()">پاک کردن امضا</button>
+      </div>
+      <button class="btn" type="submit">ذخیره تغییرات</button>
+    </form>
+  </div>
 
-        <div class="form-group">
-          <label for="email">ایمیل</label>
-          <input type="email" name="email" id="email" value="{{ profile.email }}">
-        </div>
-
-        <div class="form-group">
-          <label for="address">آدرس</label>
-          <textarea id="address" name="address" rows="3">{{ profile.address }}</textarea>
-        </div>
-
-        <div class="form-group">
-          <label for="logo">لوگو</label>
-          {% if profile.logo %}
-            <img src="{{ profile.logo.url }}" alt="لوگو" style="max-height: 100px; display: block; margin-bottom: 10px;">
-          {% endif %}
-          <input type="file" name="logo" id="logo">
-        </div>
-
-        <div class="form-group">
-          <label for="signature">امضا</label>
-          {% if profile.signature %}
-          {% endif %}
-          <canvas name=" 12" id="signaturePad" width="300" height="150" style="border:1px solid #ccc; border-radius: 8px; cursor: crosshair;"></canvas>
-          <button type="button" onclick="clearSignature()">پاک کردن امضا</button>
-        </div>
-
-        <button class="btn" type="submit">ذخیره تغییرات</button>
-      </form>
+  <div class="invoices-section">
+    <div class="invoices-header">
+      <h2>فاکتورهای من</h2>
+      <a href="{% url 'invoice_create' %}" class="btn create-btn">ایجاد فاکتور جدید</a>
     </div>
 
-    <div class="invoices-section">
-      <h2>فاکتورهای من</h2>
-      <table>
+    <div class="table-responsive">
+      <table class="invoice-table">
         <thead>
           <tr>
             <th>شماره فاکتور</th>
@@ -67,21 +66,22 @@
           </tr>
         </thead>
         <tbody>
-            {% for invoice in issued_invoices %}
-            <tr>
+          {% for invoice in issued_invoices %}
+          <tr>
             <td>{{ invoice.invoice_number }}</td>
             <td>{{ invoice.customer }}</td>
             <td>{{ invoice.created_at|date:"Y-m-d" }}</td>
             <td>{{ invoice.get_status_display }}</td>
             <td>{{ invoice.total|floatformat:0 }} تومان</td>
             <td class="invoice-actions">
-                <a href="{% url "invoice_detail" invoice.pk %}" target="_blank" rel="noopener noreferrer">مشاهده</a>
-                <a href="{% url "invoice_edit" invoice.pk %}">ویرایش</a>
+              <a href="{% url "invoice_detail" invoice.pk %}" target="_blank" rel="noopener noreferrer">مشاهده</a>
+              <a href="{% url "invoice_edit" invoice.pk %}">ویرایش</a>
             </td>
-            </tr>
-            {% endfor %}
+          </tr>
+          {% endfor %}
         </tbody>
       </table>
     </div>
+  </div>
 </div>
 {% endblock content %}
