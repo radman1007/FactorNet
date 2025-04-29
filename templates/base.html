@@ -16,7 +16,7 @@
       <ul class="nav-links">
         <li><a href="{% url "index" %}">خانه</a></li>
         <li><a href="{% url "features" %}">امکانات</a></li>
-        <li><a href="#">راهنما</a></li>
+        <li><a href="{% url "help" %}">راهنما</a></li>
         {% if user.is_authenticated %}
         <li><a href="{% url "dashboard" %}">داشبورد</a></li>
         {% else %}
