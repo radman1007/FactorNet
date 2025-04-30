@@ -44,6 +44,10 @@
 
         <div class="form-group">
           <label for="signature">امضا</label>
+          {% if profile.signature %}
+            <img src="{{ profile.signature.url }}" alt="امضای فعلی" style="max-height: 150px; display: block; margin-bottom: 10px;">
+          {% endif %}
+          <input type="hidden" name="signature_data" id="signatureData">
           <canvas id="signaturePad" width="300" height="150" style="border:1px solid #ccc; border-radius: 8px; cursor: crosshair;"></canvas>
           <button type="button" onclick="clearSignature()">پاک کردن امضا</button>
         </div>
@@ -100,4 +104,34 @@
       </table>
     </div>
 </div>
+<script>
+  const canvas = document.getElementById('signaturePad');
+  const signatureInput = document.getElementById('signatureData');
+  const ctx = canvas.getContext('2d');
+  let drawing = false;
+
+  canvas.addEventListener('mousedown', () => { drawing = true; });
+  canvas.addEventListener('mouseup', () => { drawing = false; ctx.beginPath(); });
+  canvas.addEventListener('mousemove', draw);
+
+  function draw(e) {
+    if (!drawing) return;
+    ctx.lineWidth = 2;
+    ctx.lineCap = 'round';
+    const rect = canvas.getBoundingClientRect();
+    ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+  }
+
+  function clearSignature() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
+  const form = document.querySelector('form');
+  form.addEventListener('submit', function () {
+    signatureInput.value = canvas.toDataURL();
+  });
+</script>
 {% endblock content %}

@@ -8,6 +8,8 @@ from .forms import UserProfileForm
 from django.contrib.auth.decorators import login_required
 from invoices.models import Invoice
 from django.db.models import Q
+import base64
+from django.core.files.base import ContentFile
 
 
 # برای ارسال پیامک OTP به Ghasedak
@@ -92,9 +94,20 @@ def dashboard(request):
 
     if request.method == 'POST':
         if form.is_valid():
-            form.save()
+            profile = form.save(commit=False)
+
+            # ذخیره‌ی امضا از Base64
+            signature_data = request.POST.get('signature_data')
+            if signature_data:
+                format, imgstr = signature_data.split(';base64,')
+                ext = format.split('/')[-1]
+                img_file = ContentFile(base64.b64decode(imgstr), name=f"{request.user.profiles.full_name}_signature.{ext}")
+                profile.signature.save(img_file.name, img_file, save=False)
+
+            profile.save()
             return redirect('dashboard')
 
+    # فیلتر فاکتورها
     issued_invoices = Invoice.objects.filter(user=request.user)
 
     search_query = request.GET.get('search_query', '').strip()
