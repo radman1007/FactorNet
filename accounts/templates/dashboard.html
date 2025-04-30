@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load humanize %}
 {% block css %}
 <link rel="stylesheet" href="{% static "css/dashboard.css" %}">
 {% endblock css %}
@@ -56,6 +57,18 @@
         <h2>فاکتورهای من</h2>
         <a href="{% url 'invoice_create' %}" class="btn create-btn">ایجاد فاکتور جدید</a>
       </div>
+      <form class="search-form" action="" method="POST">
+        {% csrf_token %}
+        <input name="search_query" type="text" id="searchInput" placeholder="جستجو شماره یا مشتری...">
+        <select name="status" id="statusFilter">
+          <option value="">همه وضعیت‌ها</option>
+          <option value="draft">پیش‌نویس</option>
+          <option value="final">نهایی</option>
+          <option value="paid">پرداخت‌شده</option>
+        </select>
+        <input name="created_at" type="date" id="dateFilter">
+        <button class="btn" type="submit">اعمال فیتر</button>
+      </form>
       <table class="invoice-table">
         <thead>
           <tr>
