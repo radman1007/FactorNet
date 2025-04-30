@@ -82,7 +82,23 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-  <script src="{% static "js/invoice_detail.js" %}"></script>
+  <script>
+    function downloadInvoiceAsImage() {
+      const invoiceElement = document.querySelector('.container');
+      const elementsToHide = document.querySelectorAll('.btn-row');
+      
+      elementsToHide.forEach(el => el.style.display = 'none');
+      
+      html2canvas(invoiceElement, { scale: 2 }).then(canvas => {
+          elementsToHide.forEach(el => el.style.display = '');
+      
+          const link = document.createElement('a');
+          link.download = `invoice_{{ invoice.invoice_number }}.png`;
+          link.href = canvas.toDataURL('image/png');
+          link.click();
+      });
+    }
+  </script>
 
 </body>
 </html>
