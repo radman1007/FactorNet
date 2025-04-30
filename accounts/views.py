@@ -7,6 +7,7 @@ from .models import OTP, UserProfile
 from .forms import UserProfileForm
 from django.contrib.auth.decorators import login_required
 from invoices.models import Invoice
+from django.db.models import Q
 
 
 # برای ارسال پیامک OTP به Ghasedak
@@ -94,8 +95,24 @@ def dashboard(request):
             form.save()
             return redirect('dashboard')
 
-    # فاکتورهایی که کاربر صادر کرده یا دریافت کرده
     issued_invoices = Invoice.objects.filter(user=request.user)
+
+    search_query = request.GET.get('search_query', '').strip()
+    status = request.GET.get('status')
+    created_at = request.GET.get('created_at')
+
+    if search_query:
+        issued_invoices = issued_invoices.filter(
+            Q(invoice_number__icontains=search_query) |
+            Q(customer__full_name__icontains=search_query)
+        )
+
+    if status:
+        issued_invoices = issued_invoices.filter(status=status)
+
+    if created_at:
+        issued_invoices = issued_invoices.filter(created_at__date=created_at)
+
     received_invoices = Invoice.objects.filter(customer__user=request.user)
 
     context = {
