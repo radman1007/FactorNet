@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% load humanize %}
+{% block title %}داشبورد {% if profile.full_name %}{{ profile.full_name }}{% endif %}{% endblock title %}
 {% block css %}
 <link rel="stylesheet" href="{% static "css/dashboard.css" %}">
 {% endblock css %}
@@ -18,7 +19,6 @@
       <h2>اطلاعات حساب کاربری</h2>
       <form action="" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        
         <div class="form-group">
           <label for="full-name">نام کامل</label>
           <input type="text" name="full_name" id="full-name" value="{{ profile.full_name }}">

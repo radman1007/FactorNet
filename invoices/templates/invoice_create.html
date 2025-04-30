@@ -1,6 +1,13 @@
 {% extends "base.html" %}
 {% load static %}
 {% load humanize %}
+{% block title %}
+  {% if invoice %}
+    ویرایش فاکتور {{ invoice.invoice_number }}
+  {% else %}
+    ساخت فاکتور جدید
+  {% endif %}
+{% endblock title %}
 {% block css %}
 <link rel="stylesheet" href="{% static "css/invoice_create.css" %}">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mds.bs.datetimepicker@1.1.1/dist/mds.bs.datetimepicker.style.css">
