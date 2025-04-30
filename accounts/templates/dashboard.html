@@ -55,7 +55,7 @@
     <div class="invoices-section">
       <div class="invoices-header">
         <h2>فاکتورهای من</h2>
-        <a href="{% url 'invoice_create' %}" class="btn create-btn">ایجاد فاکتور جدید</a>
+        <a href="{% url "invoice_create" %}" class="btn create-btn">ایجاد فاکتور جدید</a>
       </div>
       <form class="search-form" action="" method="GET">
         {% csrf_token %}
