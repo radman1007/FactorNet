@@ -87,7 +87,7 @@
             <td data-label="مشتری">{{ invoice.customer }}</td>
             <td data-label="تاریخ">{{ invoice.created_at|date:"Y-m-d" }}</td>
             <td data-label="وضعیت">{{ invoice.get_status_display }}</td>
-            <td data-label="مجموع">{{ invoice.total|floatformat:0 }} تومان</td>
+            <td data-label="مجموع">{{ invoice.total|floatformat:0|intcomma }} تومان</td>
             <td data-label="عملیات" class="invoice-actions">
                 <a href="{% url "invoice_detail" invoice.pk %}" target="_blank">مشاهده</a>
                 <a href="{% url "invoice_edit" invoice.pk %}">ویرایش</a>
