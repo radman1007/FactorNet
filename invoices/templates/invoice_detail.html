@@ -1,4 +1,5 @@
 {% load static %}
+{% load humanize %}
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
@@ -40,18 +41,18 @@
         <tr>
           <td>{{ item.name }}</td>
           <td>{{ item.quantity }}</td>
-          <td>{{ item.unit_price }} تومان</td>
-          <td>{{ item.total_price }} تومان</td>
+          <td>{{ item.unit_price|intcomma }} تومان</td>
+          <td>{{ item.total_price|intcomma }} تومان</td>
         </tr>
         {% endfor %}
       </tbody>
     </table>
 
     <div class="summary">
-      <p><strong>جمع جزء:</strong> {{ invoice.subtotal|floatformat:0 }} تومان</p>
-      <p><strong>تخفیف:</strong> {{ invoice.discount|floatformat:0 }} تومان</p>
-      <p><strong>مالیات ({{ invoice.tax_percent|floatformat:0 }}٪):</strong> {{ invoice.tax_amount|floatformat:0 }} تومان</p>
-      <h4>مبلغ نهایی: {{ invoice.total|floatformat:0 }} تومان</h4>
+      <p><strong>جمع جزء:</strong> {{ invoice.subtotal|floatformat:0|intcomma }} تومان</p>
+      <p><strong>تخفیف:</strong> {{ invoice.discount|floatformat:0|intcomma }} تومان</p>
+      <p><strong>مالیات ({{ invoice.tax_percent|floatformat:0 }}٪):</strong> {{ invoice.tax_amount|floatformat:0|intcomma }} تومان</p>
+      <h4>مبلغ نهایی: {{ invoice.total|floatformat:0|intcomma }} تومان</h4>
       <p><strong>وضعیت:</strong> {{ invoice.get_status_display }}</p>
       <p><strong>تاریخ:</strong> {{ invoice.created_at|date:"Y-m-d" }}</p>
     </div>
