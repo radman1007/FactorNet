@@ -38,9 +38,6 @@
       <textarea name="customer_address" placeholder="آدرس مشتری">{{ invoice.customer.address }}</textarea>
 
       <h3>جزئیات فاکتور</h3>
-      {% if not invoice.invoice_number %}
-      <input type="text" name="invoice_number" placeholder="شماره فاکتور" value="{{ invoice.invoice_number }}">
-      {% endif %}
       <input type="date" name="due_date" id="dueDateInput" class="rtl-date" value="{{ invoice.due_date }}">
       <textarea name="notes" placeholder="یادداشت (اختیاری)">{{ invoice.notes }}</textarea>
 

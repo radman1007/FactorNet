@@ -23,12 +23,11 @@ def invoice_list_view(request):
 
 @login_required
 def invoice_create_or_update(request, pk=None):
+    profile = get_object_or_404(UserProfile, user=request.user)
     if pk:
         invoice = get_object_or_404(Invoice, pk=pk, user=request.user)
-        profile = get_object_or_404(UserProfile, user=request.user)
     else:
         invoice = None
-        profile = None
 
     if request.method == 'POST':
         form = InvoiceForm(request.POST, instance=invoice)
