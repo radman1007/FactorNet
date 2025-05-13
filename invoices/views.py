@@ -12,6 +12,7 @@ from rest_framework import viewsets
 from .serializers import CustomerSerializer, InvoiceSerializer, InvoiceItemSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import PermissionDenied
+from .utils import render_invoice_to_image
 
 @login_required
 def invoice_list_view(request):
@@ -24,53 +25,97 @@ def invoice_list_view(request):
 @login_required
 def invoice_create_or_update(request, pk=None):
     profile = get_object_or_404(UserProfile, user=request.user)
-    if pk:
-        invoice = get_object_or_404(Invoice, pk=pk, user=request.user)
-    else:
-        invoice = None
+    invoice = get_object_or_404(Invoice, pk=pk, user=request.user) if pk else None
 
     if request.method == 'POST':
-        form = InvoiceForm(request.POST, instance=invoice)
-        formset = InvoiceItemFormSet(request.POST, instance=invoice)
-        if form.is_valid() and formset.is_valid():
-            invoice = form.save(commit=False)
-            invoice.user = request.user
+        full_name = request.POST.get('customer_full_name')
+        phone = request.POST.get('customer_phone_number')
+        national_code = request.POST.get('customer_national_code')
+        email = request.POST.get('customer_email')
+        address = request.POST.get('customer_address')
+
+        customer, created = Customer.objects.get_or_create(
+            phone_number=phone,
+            user=request.user,
+            defaults={
+                'full_name': full_name,
+                'email': email,
+                'address': address,
+                'national_code': national_code
+            }
+        )
+        if not created:
+            customer.full_name = full_name
+            customer.email = email
+            customer.address = address
+            customer.national_code = national_code
+            customer.save()
+
+        due_date = request.POST.get('due_date') or None
+        notes = request.POST.get('notes') or None
+        discount = request.POST.get('discount') or 0
+        tax_percent = request.POST.get('tax_percent') or 0
+        status = request.POST.get('status')
+
+        if invoice is None:
+            invoice = Invoice.objects.create(
+                customer=customer,
+                user=request.user,
+                due_date=due_date,
+                notes=notes,
+                discount=discount,
+                tax_percent=tax_percent,
+                status=status
+            )
+        else:
+            invoice.customer = customer
+            invoice.due_date = due_date
+            invoice.notes = notes
+            invoice.discount = discount
+            invoice.tax_percent = tax_percent
+            invoice.status = status
             invoice.save()
-            formset.instance = invoice
-            formset.save()
-            form.save()
+            invoice.items.all().delete()
 
-            if invoice.status == 'final':
-                image_path = render_invoice_to_image(invoice)
+        item_prefix = 'name_'
+        item_names = [key for key in request.POST if key.startswith(item_prefix)]
 
-                seller_email = request.user.email
-                customer_email = invoice.customer.email if invoice.customer else None
+        for key in item_names:
+            suffix = key.replace(item_prefix, '')
+            name = request.POST.get(f'name_{suffix}')
+            description = request.POST.get(f'description_{suffix}')
+            quantity = int(request.POST.get(f'quantity_{suffix}', 0))
+            unit_price = int(request.POST.get(f'unit_price_{suffix}', 0))
 
-                subject = f"Invoice {invoice.invoice_number}"
-                message = "Dear Customer, please find attached the image of your invoice."
-                email = EmailMessage(subject, message, settings.DEFAULT_FROM_EMAIL)
-                
-                email.attach_file(image_path)
-                email.to = [seller_email]
+            InvoiceItem.objects.create(
+                invoice=invoice,
+                name=name,
+                description=description,
+                quantity=quantity,
+                unit_price=unit_price
+            )
+
+        if invoice.status == 'final':
+            image_path = render_invoice_to_image(invoice)
+            seller_email = request.user.email
+            customer_email = invoice.customer.email
+
+            subject = f"Invoice {invoice.invoice_number}"
+            message = "Dear Customer, please find attached the image of your invoice."
+            email = EmailMessage(subject, message, settings.DEFAULT_FROM_EMAIL)
+            email.attach_file(image_path)
+            email.to = [seller_email]
+            email.send()
+            if customer_email:
+                email.to = [customer_email]
                 email.send()
 
-                if customer_email:
-                    email.to = [customer_email]
-                    email.send()
+        return redirect('dashboard')
 
-            return redirect('invoice_list')
-    else:
-        form = InvoiceForm(instance=invoice)
-        formset = InvoiceItemFormSet(instance=invoice)
-        
     context = {
-        'invoice' : invoice,
-        'profile' : profile,
-        'form': form,
-        'formset': formset,
-        'is_edit': pk is not None
+        'invoice': invoice,
+        'profile': profile,
     }
-
     return render(request, 'invoice_create.html', context)
     
 @login_required
