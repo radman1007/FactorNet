@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'invoices',
     'home',
     'errors',
+    'assistant',
 ]
 
 MIDDLEWARE = [
