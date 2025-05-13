@@ -12,7 +12,6 @@ import base64
 from django.core.files.base import ContentFile
 
 
-# برای ارسال پیامک OTP به Ghasedak
 import ghasedakpack
 sms = ghasedakpack.Ghasedak('YOUR_API_KEY')
 YOUR_TEMPLATE_NAME_ON_GHASEDAK = 'YOUR_TEMPLATE_NAME'
@@ -31,7 +30,6 @@ class LoginView(View):
             request.session['otp'] = otp
             request.session['phone_number'] = phone_number
 
-            # ذخیره کد OTP در دیتابیس
             OTP.objects.create(phone=phone_number, code=otp)
 
             try:
@@ -53,9 +51,7 @@ class LoginView(View):
             saved_otp = request.session.get('otp')
             saved_phone = request.session.get('phone_number')
 
-            # چک کردن کد OTP وارد شده
             if sent_otp == saved_otp and saved_phone:
-                # بررسی اینکه آیا کاربر قبلاً ثبت نام کرده یا نه
                 user = get_user_model().objects.filter(phone=saved_phone).first()
                 if not user:
                     user = get_user_model().objects.create(phone=saved_phone)
@@ -96,7 +92,6 @@ def dashboard(request):
         if form.is_valid():
             profile = form.save(commit=False)
 
-            # ذخیره‌ی امضا از Base64
             signature_data = request.POST.get('signature_data')
             if signature_data:
                 format, imgstr = signature_data.split(';base64,')
@@ -107,7 +102,6 @@ def dashboard(request):
             profile.save()
             return redirect('dashboard')
 
-    # فیلتر فاکتورها
     issued_invoices = Invoice.objects.filter(user=request.user)
 
     search_query = request.GET.get('search_query', '').strip()

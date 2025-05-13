@@ -3,14 +3,27 @@ from .models import Customer, Invoice, InvoiceItem
 
 class InvoiceItemInline(admin.TabularInline):
     model = InvoiceItem
-    extra = 1  # تعداد آیتم‌های جدید قابل اضافه شدن
+    extra = 1
     readonly_fields = ('total_price',)
+
+
+class InvoiceInline(admin.TabularInline):
+    model = Invoice
+    extra = 0
+    fields = ('invoice_number', 'status', 'due_date', 'total_display')
+    readonly_fields = ('total_display',)
+    show_change_link = True
+
+    def total_display(self, obj):
+        return obj.total()
+    total_display.short_description = "مبلغ نهایی"
 
 
 @admin.register(Customer)
 class CustomerAdmin(admin.ModelAdmin):
     list_display = ('full_name', 'phone_number', 'email')
     search_fields = ('full_name', 'phone_number', 'email')
+    inlines = [InvoiceInline]
 
 
 @admin.register(Invoice)
