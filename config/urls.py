@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from .data import DJANGO_ADMIN_URL, DJANGO_PROFESSIONAL_ADMIN_DASHBOARD_URL
+from .data import DJANGO_ADMIN_URL, DJANGO_PROFESSIONAL_CONTROL_PANEL_URL
 
 urlpatterns = [
     path(DJANGO_ADMIN_URL, admin.site.urls),
