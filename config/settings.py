@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'home',
     'errors',
     'assistant',
-    'admin',
+    'controlpannel',
 ]
 
 MIDDLEWARE = [

@@ -26,5 +26,5 @@ urlpatterns = [
     path('', include('home.urls')),
     path('invoice/', include('invoices.urls')),
     path('assistant/', include('assistant.urls')),
-    path(DJANGO_PROFESSIONAL_ADMIN_DASHBOARD_URL, include('admin.urls')),
+    path(DJANGO_PROFESSIONAL_CONTROL_PANEL_URL, include('controlpanel.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
