@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from .data import DJANGO_ADMIN_URL
+from .data import DJANGO_ADMIN_URL, DJANGO_PROFESSIONAL_ADMIN_DASHBOARD_URL
 
 urlpatterns = [
     path(DJANGO_ADMIN_URL, admin.site.urls),
@@ -26,4 +26,5 @@ urlpatterns = [
     path('', include('home.urls')),
     path('invoice/', include('invoices.urls')),
     path('assistant/', include('assistant.urls')),
+    path(DJANGO_PROFESSIONAL_ADMIN_DASHBOARD_URL, include('admin.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

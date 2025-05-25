@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'home',
     'errors',
     'assistant',
+    'admin',
 ]
 
 MIDDLEWARE = [
