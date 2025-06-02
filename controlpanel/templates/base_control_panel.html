@@ -272,8 +272,9 @@
 
     <main>
         <div class="search_box_main">
-            <form action="" class="search_box_header box_shadow">
-                <input type="text" placeholder="Search...">
+            <form action="" method="POST" class="search_box_header box_shadow">
+                {% csrf_token %}
+                <input type="text" name="" placeholder="جستجو ...">
                 <button>
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                         <path
@@ -283,7 +284,7 @@
                             d="M22.0004 22.7502C21.8104 22.7502 21.6204 22.6802 21.4704 22.5302L19.4704 20.5302C19.1804 20.2402 19.1804 19.7602 19.4704 19.4702C19.7604 19.1802 20.2404 19.1802 20.5304 19.4702L22.5304 21.4702C22.8204 21.7602 22.8204 22.2402 22.5304 22.5302C22.3804 22.6802 22.1904 22.7502 22.0004 22.7502Z"
                             fill="#1A2029" fill-opacity="0.5"></path>
                     </svg>
-                </button>
+                </button type="submit">
             </form>
         </div>
         {% block main %}{% endblock main %}
