@@ -7,10 +7,6 @@
 {% block header_title %}فاکتور ها{% endblock header_title %}
 {% block main %}
 <div class="invoices-section">
-    <div class="invoices-header">
-      <h2>فاکتورهای من</h2>
-      <a href="{% url "invoice_create" %}" class="btn create-btn">ایجاد فاکتور جدید</a>
-    </div>
     <form class="search-form" action="" method="GET">
       {% csrf_token %}
       <input name="search_query" type="text" id="searchInput" placeholder="جستجو شماره یا مشتری..." value="{{ request.GET.search_query }}">
