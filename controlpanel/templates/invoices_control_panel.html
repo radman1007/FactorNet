@@ -1,0 +1,56 @@
+{% extends "base_control_panel.html" %}
+{% load static %}
+{% load humanize %}
+{% block css %}
+<link rel="stylesheet" href="{% static "css/dashboard.css" %}">
+{% endblock css %}
+{% block header_title %}فاکتور ها{% endblock header_title %}
+{% block main %}
+<div class="invoices-section">
+    <div class="invoices-header">
+      <h2>فاکتورهای من</h2>
+      <a href="{% url "invoice_create" %}" class="btn create-btn">ایجاد فاکتور جدید</a>
+    </div>
+    <form class="search-form" action="" method="GET">
+      {% csrf_token %}
+      <input name="search_query" type="text" id="searchInput" placeholder="جستجو شماره یا مشتری..." value="{{ request.GET.search_query }}">
+      <select name="status" id="statusFilter">
+        <option value="">همه وضعیت‌ها</option>
+        <option value="draft" {% if request.GET.status == "draft" %}selected{% endif %}>پیش‌نویس</option>
+        <option value="final" {% if request.GET.status == "final" %}selected{% endif %}>نهایی</option>
+        <option value="paid" {% if request.GET.status == "paid" %}selected{% endif %}>پرداخت‌شده</option>
+      </select>
+      <input name="created_at" type="date" id="dateFilter" value="{{ request.GET.created_at }}">
+      <button class="btn" type="submit">اعمال فیتر</button>
+    </form>
+    <table class="invoice-table">
+      <thead>
+        <tr>
+          <th>شماره فاکتور</th>
+          <th>مشتری</th>
+          <th>تاریخ</th>
+          <th>وضعیت</th>
+          <th>مجموع</th>
+          <th>عملیات</th>
+        </tr>
+      </thead>
+      <tbody>
+          {% for invoice in invoices %}
+          <tr>
+          <td data-label="شماره فاکتور">{{ invoice.invoice_number }}</td>
+          <td data-label="مشتری">{{ invoice.customer }}</td>
+          <td data-label="تاریخ">{{ invoice.created_at|date:"Y-m-d" }}</td>
+          <td data-label="وضعیت">{{ invoice.get_status_display }}</td>
+          <td data-label="مجموع">{{ invoice.total|floatformat:0|intcomma }} تومان</td>
+          <td data-label="عملیات" class="invoice-actions">
+              <a href="{% url "invoice_detail" invoice.pk %}" target="_blank">مشاهده</a>
+              <a href="{% url "invoice_edit" invoice.pk %}">ویرایش</a>
+          </td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="6">هیچ فاکتوری ثبت نشده است.</td></tr>
+          {% endfor %}
+      </tbody>
+    </table>
+</div>
+{% endblock main %}
