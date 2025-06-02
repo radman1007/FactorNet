@@ -238,9 +238,9 @@
                     </span>
                 </div>
                 <div class="list_account_user box_shadow">
-                    <form action="" method="POST" class="search_user">
+                    <form action="" method="GET" class="search_user">
                         {% csrf_token %}
-                        <input type="text" name="search_user" placeholder="جستجو ...">
+                        <input type="text" name="search_user" placeholder="جستجو ..." value="{{ search_user }}">
                         <button>
                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="26" viewBox="0 0 25 26" fill="none">
                                 <path d="M16.4115 15.349H15.5885L15.2969 15.0677C16.3177 13.8802 16.9323 12.3385 16.9323 10.6615C16.9323 6.92187 13.901 3.89062 10.1615 3.89062C6.42187 3.89062 3.39062 6.92187 3.39062 10.6615C3.39062 14.401 6.42187 17.4323 10.1615 17.4323C11.8385 17.4323 13.3802 16.8177 14.5677 15.7969L14.849 16.0885V16.9115L20.0573 22.1094L21.6094 20.5573L16.4115 15.349ZM10.1615 15.349C7.56771 15.349 5.47396 13.2552 5.47396 10.6615C5.47396 8.06771 7.56771 5.97396 10.1615 5.97396C12.7552 5.97396 14.849 8.06771 14.849 10.6615C14.849 13.2552 12.7552 15.349 10.1615 15.349Z" fill="#B6BFC8"/>
