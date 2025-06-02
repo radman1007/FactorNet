@@ -232,7 +232,7 @@
                     <div class="container_account">
                         {% for user in users %}
                         <div class="account_user d_flex">
-                            <input type="checkbox" name="" id="">
+                            <input type="checkbox" name="" id="" {% if user.is_staff %}checked{% endif %}>
                             <div class="info_user_account d_flex align_items_center">
                                 {% if user.profiles.logo %}
                                 <img src="{{ user.profiles.logo.url }}" alt="logo">
