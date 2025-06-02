@@ -10,24 +10,24 @@
 {% block header %}
 <div class="hero-content">
     <h2>با هوش مصنوعی، سریع، دقیق و رایگان!</h2>
-    {% comment %} <p>چت‌بات فاکتورنت، همراه هوشمند شما برای مشاوره حسابداری، نگارش متن، ترجمه، برنامه‌نویسی، و مدیریت مالی کسب‌وکارها. از تولید فاکتور تا تحلیل فروش، فقط با چند پیام!</p> {% endcomment %}
+    <p>چت‌بات فاکتورنت، همراه هوشمند شما برای مشاوره حسابداری، نگارش متن، ترجمه، برنامه‌نویسی، و مدیریت مالی کسب‌وکارها. از تولید فاکتور تا تحلیل فروش، فقط با چند پیام!</p>
 </div>
 {% endblock header %}
 {% block content %}
-<div class="center-text">دستیار هوشمند</div>
+<div class="center-text"></div>
 
 <div class="chat-container">
-<div class="chat-messages" id="chatBox"></div>
+    <div class="chat-messages" id="chatBox"></div>
 
-<div class="suggestions">
-    <button onclick="sendSuggested('سلام، چطوری؟')">سلام، چطوری؟</button>
-    <button onclick="sendSuggested('این ماه چقدر فروش داشتم؟')">این ماه چقدر فروش داشتم؟</button>
-    <button onclick="sendSuggested('چه کارهایی می‌تونی انجام بدی؟')">چه کارهایی می‌تونی انجام بدی؟</button>
-</div>
+    <div class="suggestions">
+        <button onclick="sendSuggested('سلام، چطوری؟')">سلام، چطوری؟</button>
+        <button onclick="sendSuggested('این ماه چقدر فروش داشتم؟')">این ماه چقدر فروش داشتم؟</button>
+        <button onclick="sendSuggested('چه کارهایی می‌تونی انجام بدی؟')">چه کارهایی می‌تونی انجام بدی؟</button>
+    </div>
 
-<div class="input-row">
-    <input type="text" id="userInput" placeholder="پیام خود را بنویسید...">
-    <button class="send-btn" onclick="sendMessage()">ارسال</button>
-</div>
+    <div class="input-row">
+        <input type="text" id="userInput" placeholder="پیام خود را بنویسید...">
+        <button class="send-btn" onclick="sendMessage()">ارسال</button>
+    </div>
 </div>
 {% endblock content %}
