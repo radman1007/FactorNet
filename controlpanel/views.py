@@ -16,3 +16,7 @@ def index_control_panel(request):
         'search_user' : search_user,
     }
     return render(request, 'index_control_panel.html', context)
+
+@login_required
+def chart_control_panel(request):
+    return render(request, 'chart_control_panel.html')
