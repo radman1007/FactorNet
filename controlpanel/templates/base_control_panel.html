@@ -109,7 +109,7 @@
                             d="M13 13.75H7C6.59 13.75 6.25 13.41 6.25 13C6.25 12.59 6.59 12.25 7 12.25H13C13.41 12.25 13.75 12.59 13.75 13C13.75 13.41 13.41 13.75 13 13.75Z"
                             fill="#1A2029" />
                     </svg>
-                    <span>خبر</span>
+                    <span>خبر ها</span>
                 </a>
             </li>
             <li>
@@ -126,7 +126,7 @@
                 </a>
             </li>
             <li>
-                <a href="">
+                <a href="{% url "admin:index" %}">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                         <path
                             d="M12 15.75C9.93 15.75 8.25 14.07 8.25 12C8.25 9.93 9.93 8.25 12 8.25C14.07 8.25 15.75 9.93 15.75 12C15.75 14.07 14.07 15.75 12 15.75ZM12 9.75C10.76 9.75 9.75 10.76 9.75 12C9.75 13.24 10.76 14.25 12 14.25C13.24 14.25 14.25 13.24 14.25 12C14.25 10.76 13.24 9.75 12 9.75Z"
@@ -139,7 +139,7 @@
                 </a>
             </li>
             <li>
-                <a href="">
+                <a href="{% url "logout" %}">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                         <path
                             d="M15.24 22.27H15.11C10.67 22.27 8.53002 20.52 8.16002 16.6C8.12002 16.19 8.42002 15.82 8.84002 15.78C9.24002 15.74 9.62002 16.05 9.66002 16.46C9.95002 19.6 11.43 20.77 15.12 20.77H15.25C19.32 20.77 20.76 19.33 20.76 15.26V8.73998C20.76 4.66998 19.32 3.22998 15.25 3.22998H15.12C11.41 3.22998 9.93002 4.41998 9.66002 7.61998C9.61002 8.02998 9.26002 8.33998 8.84002 8.29998C8.42002 8.26998 8.12001 7.89998 8.15001 7.48998C8.49001 3.50998 10.64 1.72998 15.11 1.72998H15.24C20.15 1.72998 22.25 3.82998 22.25 8.73998V15.26C22.25 20.17 20.15 22.27 15.24 22.27Z"
@@ -185,10 +185,11 @@
             </svg>
         </div>
         <div class="title_header">
-            <h5>Dashboard</h5>
+            <h5>{% block header_title %}{% endblock header_title %}</h5>
         </div>
-        <form action="" class="search_box_header box_shadow">
-            <input type="text" placeholder="Search...">
+        <form action="" method="POST" class="search_box_header box_shadow">
+            {% csrf_token %}
+            <input type="text" name="" placeholder="جستجو ...">
             <button>
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                     <path
@@ -198,7 +199,7 @@
                         d="M22.0004 22.7502C21.8104 22.7502 21.6204 22.6802 21.4704 22.5302L19.4704 20.5302C19.1804 20.2402 19.1804 19.7602 19.4704 19.4702C19.7604 19.1802 20.2404 19.1802 20.5304 19.4702L22.5304 21.4702C22.8204 21.7602 22.8204 22.2402 22.5304 22.5302C22.3804 22.6802 22.1904 22.7502 22.0004 22.7502Z"
                         fill="#1A2029" fill-opacity="0.5" />
                 </svg>
-            </button>
+            </button type="submit">
         </form>
         <div class="user_action">
             <div class="message_user">
@@ -221,11 +222,13 @@
                 </ul>
             </div>
             <div class="user_info">
+                {% if request.user.profiles.logo %}
                 <div class="img_user_info">
-                    <img src="img/Photo.png" alt="">
+                    <img src="{{ request.user.profiles.logo.url }}" alt="logo">
                 </div>
+                {% endif %}
                 <div class="full_name_user">
-                    <span>Esther Howard</span>
+                    <span>{{ request.user.profiles.full_name }}</span>
                     <span>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                             <path
