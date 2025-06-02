@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{% static "css/control_panel.css" %}">
     <link rel="stylesheet" href="{% static "css/control_panel_media.css" %}">
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600&display=swap" rel="stylesheet">
+    {% block css %}{% endblock css %}
 </head>
 <body>
     <aside>
@@ -275,5 +276,6 @@
     <div class="bg_cover"></div>
     <script src="{% static "js/plugins/apexcharts.js" %}"></script>
     <script src="{% static "js/control_panel.js" %}"></script>
+    {% block js %}{% endblock js %}
 </body>
 </html>
