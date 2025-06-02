@@ -37,7 +37,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     class Meta:
         verbose_name = "کاربر"
-        verbose_name_plural = "کاربران"
+        verbose_name_plural = "کاربرها"
 
 
 class OTP(models.Model):

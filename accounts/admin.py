@@ -4,6 +4,9 @@ from django.utils.translation import gettext_lazy as _
 from .models import User, UserProfile
 from django import forms
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
+from django.contrib.auth.models import Group
+
+admin.site.unregister(Group)
 
 
 class UserCreationForm(forms.ModelForm):
