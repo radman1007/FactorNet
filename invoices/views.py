@@ -14,14 +14,6 @@ from rest_framework.exceptions import PermissionDenied
 from .utils import render_invoice_to_image
 
 @login_required
-def invoice_list_view(request):
-    invoices = Invoice.objects.filter(customer=request.user).order_by('-created_at')
-    context = {
-        'invoices' : invoices
-    }
-    return render(request, 'invoice_list.html', context)
-
-@login_required
 def invoice_create_or_update(request, pk=None):
     profile = get_object_or_404(UserProfile, user=request.user)
     invoice = get_object_or_404(Invoice, pk=pk, user=request.user) if pk else None
