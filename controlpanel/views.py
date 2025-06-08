@@ -41,3 +41,7 @@ def invoices_control_panel(request):
         'invoices' : invoices
     }
     return render(request, 'invoices_control_panel.html', context)
+
+@login_required
+def messages_control_panel(request):
+    return render(request, 'messages_control_panel.html')
