@@ -50,3 +50,7 @@ def messages_control_panel(request):
         'messages' : messages,
     }
     return render(request, 'messages_control_panel.html', context)
+
+@login_required
+def transactions_control_panel(request):
+    return render(request, 'transactions_control_panel.html')
