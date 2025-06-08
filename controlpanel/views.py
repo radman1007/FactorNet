@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from invoices.models import Invoice
 from django.db.models import Q
+from home.models import Contact
 
 @login_required
 def index_control_panel(request):
@@ -44,4 +45,8 @@ def invoices_control_panel(request):
 
 @login_required
 def messages_control_panel(request):
-    return render(request, 'messages_control_panel.html')
+    messages = Contact.objects.all()
+    context = {
+        'messages' : messages,
+    }
+    return render(request, 'messages_control_panel.html', context)
